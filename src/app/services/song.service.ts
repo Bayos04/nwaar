@@ -104,6 +104,28 @@ export class SongService {
           releaseDate: new Date(),
         },
       },
+      {
+        id: 6,
+        title: "Tricheur",
+        artist: [
+          { id: 2, name: "Nekfeu" },
+          { id: 3, name: "Damso" },
+        ],
+        genre: "Rap Fr",
+        track: 12,
+        path: "",
+        length: "",
+        releaseDate: new Date(),
+        size: 3015,
+        uploadDate: new Date(),
+        album: {
+          id: 2,
+          name: "Les étoiles Vagabondes",
+          artist: { id: 2, name: "Nekfeu" },
+          cover: "assets/images/covers/nekfeu-lev.jpeg",
+          releaseDate: new Date(),
+        },
+      },
     ];
   }
 }
