@@ -5,23 +5,14 @@
   <div class="card-section">
     <h4 class="title">Récemment écoutées</h4>
     <div class="box-container">
-      <div class="box">
-        <img class="img-fluid" src="" alt="" />
-      </div>
-      <div class="box">
-        <img class="img-fluid" src="" alt="" />
-      </div>
-      <div class="box">
-        <img class="img-fluid" src="" alt="" />
-      </div>
-      <div class="box">
-        <img class="img-fluid" src="" alt="" />
-      </div>
-      <div class="box">
-        <img class="img-fluid" src="" alt="" />
-      </div>
-      <div class="box">
-        <img class="img-fluid" src="" alt="" />
+      <div class="box" *ngFor="let song of list">
+        <img
+          class="img-fluid"
+          src="{{song.album.cover}}"
+          alt="{{song.title}}"
+        />
+        <h6>{{song.title}}</h6>
+        <p>{{song.artist.name}}</p>
       </div>
     </div>
   </div>
