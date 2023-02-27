@@ -1,6 +1,5 @@
 .container {
     color: #fff;
-    overflow: auto;
 }
 
 .hello {
@@ -22,13 +21,22 @@
 
 .box-container {
     display: flex;
+    overflow-x: auto;
     justify-content: space-between;
     overflow: auto;
+    white-space: nowrap;
 }
 
 .box {
-    width: 45%;
-    height: 134px;
+    width: 140px;
+    min-width: 140px !important;
+    background-color: #111111;
+    padding: 5px;
+    margin-right: 10px;
+    border-radius: 5px;
+}
+
+.box:hover {
     background-color: #242424;
-    margin: 0 10px;
+    transition: 0.5s;
 }
