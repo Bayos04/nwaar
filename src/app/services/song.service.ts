@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import axios, { AxiosResponse } from "axios";
 
 @Injectable({
   providedIn: "root",
@@ -6,6 +7,12 @@ import { Injectable } from "@angular/core";
 export class SongService {
   allSongs: Array<any> = [];
   constructor() {}
+
+  private accessToken: string = "";
+
+  private readonly CLIENT_ID = "f86e8b419ef642b692b93209ae0d2578";
+  private readonly REDIRECT_URI = "https://example.com/callback"; // Replace with your own redirect URI
+  private readonly API_BASE_URL = "https://api.spotify.com/v1";
 
   getAllSongs() {
     return [
@@ -127,5 +134,64 @@ export class SongService {
         },
       },
     ];
+  }
+
+  // Get an access token using client credentials flow
+  async getAccessToken(): Promise<string> {
+    const response = await axios.post(
+      "https://accounts.spotify.com/api/token",
+      {
+        grant_type: "client_credentials",
+      },
+      {
+        headers: {
+          Authorization: `Basic ${btoa(
+            `${this.CLIENT_ID}:<YOUR_CLIENT_SECRET>`
+          )}`,
+        },
+      }
+    );
+
+    return response.data.access_token;
+  }
+
+  // Get songs from user's library
+  async getLibrarySongs(
+    accessToken: string,
+    offset: number
+  ): Promise<AxiosResponse> {
+    const response = await axios.get(`${this.API_BASE_URL}/me/tracks`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+      params: {
+        limit: 50,
+        offset: offset,
+      },
+    });
+
+    return response;
+  }
+
+  // Retrieve all the songs in the user's library
+  async getAllLibrarySongs(): Promise<void> {
+    this.accessToken = await this.getAccessToken();
+
+    let response = await this.getLibrarySongs(this.accessToken, 0);
+    let songs = response.data.items;
+
+    while (response.data.next) {
+      response = await axios.get(response.data.next, {
+        headers: {
+          Authorization: `Bearer ${this.accessToken}`,
+        },
+      });
+
+      songs = [...songs, ...response.data.items];
+      console.log(songs);
+    }
+
+    this.allSongs = songs;
+    console.log(`Retrieved ${this.allSongs.length} songs from user's library!`);
   }
 }
